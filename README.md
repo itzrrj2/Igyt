@@ -26,7 +26,7 @@ The Media Downloader Bot allows you to seamlessly download media from various po
 
 1. Clone the repository:
     ```bash
-    
+    https://github.com/HmmSmokieOfficial/Media-Downloader.git
     ```
 
 2. Install required dependencies:
@@ -51,6 +51,7 @@ The Media Downloader Bot allows you to seamlessly download media from various po
 - **/start**: Initialize the bot and get the welcome message
 - **/broadcast**: Broadcast to user
 - **/spotify**: Get The Track Of Song
+- **/audio**: Search and Download The Youtube Video In audio format
 
 ## Supported Platforms
 - **Instagram**
@@ -58,6 +59,7 @@ The Media Downloader Bot allows you to seamlessly download media from various po
 - **Pinterest**
 - **Facebook**
 - **Twitter**
+- **Terabox**
 
 ## Security and Permissions
 - The bot ensures secure download links and access.
