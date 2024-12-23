@@ -1,3 +1,20 @@
-flask
-pyngrok
-pymongo
+asyncio  # Built-in, no installation required
+json  # Built-in, no installation required
+os  # Built-in, no installation required
+logging  # Built-in, no installation required
+re  # Built-in, no installation required
+time  # Built-in, no installation required
+shutil  # Built-in, no installation required
+humanize
+math  # Built-in, no installation required
+spotipy
+pathlib  # Built-in, no installation required
+datetime  # Built-in, no installation required
+concurrent.futures  # Built-in, no installation required
+yt-dlp
+pyrogram
+aiohttp
+cv2  # OpenCV-Python package
+Pillow
+youtubesearchpython
+motor
