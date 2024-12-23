@@ -26,8 +26,7 @@ The Media Downloader Bot allows you to seamlessly download media from various po
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/thefinegraphicsroom/media-downloader-bot.git
-    cd media-downloader-bot
+    
     ```
 
 2. Install required dependencies:
