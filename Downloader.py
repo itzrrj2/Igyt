@@ -28,6 +28,9 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from pyrogram.types import Message, InlineKeyboardMarkup
 from pyrogram.errors import FloodWait, InputUserDeactivated, UserIsBlocked, PeerIdInvalid
 import asyncio
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Setup logging
 logging.basicConfig(
@@ -38,30 +41,36 @@ logger = logging.getLogger(__name__)
 yt_dlp.utils.bug_reports_message = lambda: ''
 logging.getLogger('yt_dlp').setLevel(logging.CRITICAL)
 
-# Configure your API credentials
-API_ID = "Your_API_ID"
-API_HASH = "API_HASH"
-BOT_TOKEN = "BOT TOKEN"
-LOG_GROUP_ID = -1001806351030  # Replace with your logging group ID
-OWNER_USERNAME = "@Hmm_Smokie"
-SPOTIFY_CLIENT_ID = 'SPOTIFY CLIENT ID'
-SPOTIFY_CLIENT_SECRET = 'SPOTIFY CLIENT SECRET'
-GENIUS_TOKEN = 'GENIUS TOKEN FOR LYRICS'
-RAPID_API_KEY = 'fOR INSTA SCRAP NEED KEY'
-RAPID_API_URL = "FOR INSTA SCRAP NEED URL"
+
+# API Credentials
+api_id = os.getenv("API_ID")
+api_hash = os.getenv("API_HASH")
+bot_token = os.getenv("BOT_TOKEN")
+log_group_id = int(os.getenv("LOG_GROUP_ID"))
+owner_username = os.getenv("OWNER_USERNAME")
+
+# Spotify Credentials
+spotify_client_id = os.getenv("SPOTIFY_CLIENT_ID")
+spotify_client_secret = os.getenv("SPOTIFY_CLIENT_SECRET")
+
+# Genius API
+genius_token = os.getenv("GENIUS_TOKEN")
+
+# RapidAPI Configuration
+rapid_api_key = os.getenv("RAPID_API_KEY")
+rapid_api_url = os.getenv("RAPID_API_URL")
 
 # MongoDB Configuration
-MONGO_URI = "MONGO URL"
-DB_NAME = "Downloader"
-USERS_COLLECTION = "users"
+mongo_uri = os.getenv("MONGO_URI")
+db_name = os.getenv("DB_NAME")
+users_collection = os.getenv("USERS_COLLECTION")
 
 # Terabox Configuration
-WEBAPP_URL = "MINI APP URL"
-TERABOX_IMAGE = "https://cdn.glitch.global/37127bbb-2499-443c-9bec-47899afdad04/photo_2024-12-20_23-41-03.jpg?v=1734718281072"
-NONVEG_IMAGE = "https://cdn.glitch.global/37127bbb-2499-443c-9bec-47899afdad04/photo_2024-12-21_00-00-51.jpg?v=1734719485408"
-TERABOX_API_URL = "API NEED FOR TERABOX"
-RAPIDAPI_KEY = "TERABOX API"
-RAPIDAPI_HOST = "HOST FOR TERABOX"
+webapp_url = os.getenv("WEBAPP_URL")
+terabox_image = os.getenv("TERABOX_IMAGE")
+nonveg_image = os.getenv("NONVEG_IMAGE")
+terabox_api_url = os.getenv("TERABOX_API_URL")
+rapidapi_host = os.getenv("RAPIDAPI_HOST")
 
 
 # Constants
