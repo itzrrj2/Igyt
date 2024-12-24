@@ -1,4 +1,6 @@
 # ᴘᴏᴡᴇʀᴇᴅ ʙʏ ＳＳ 🇬​​🇷​​🇴​​🇺​​🇵
+![Bot Logo](https://example.com/logo.png)
+
 
 # Media Downloader Bot
 
