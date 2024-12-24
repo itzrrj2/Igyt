@@ -57,6 +57,9 @@ The Media Downloader Bot allows you to seamlessly download media from various po
     RAPIDAPI_KEY= api key for terabox
     RAPIDAPI_HOST= host for terabox
     ```
+5. Need 3 Directory:
+  - temp
+  - temp_media
 
 ## Configuration
 - Ensure the necessary API credentials are provided for each supported platform.
