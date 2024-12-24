@@ -39,29 +39,29 @@ yt_dlp.utils.bug_reports_message = lambda: ''
 logging.getLogger('yt_dlp').setLevel(logging.CRITICAL)
 
 # Configure your API credentials
-API_ID = "27233487"
-API_HASH = "ceeed1a68ce9bed3910c8e1f83c499e4"
-BOT_TOKEN = "7993147856:AAG7JcZjpduYEetw-h6wBUWYnO_EW4n_tt4"
+API_ID = "Your_API_ID"
+API_HASH = "API_HASH"
+BOT_TOKEN = "BOT TOKEN"
 LOG_GROUP_ID = -1001806351030  # Replace with your logging group ID
 OWNER_USERNAME = "@Hmm_Smokie"
-SPOTIFY_CLIENT_ID = 'c623bcd2b3024663b0c094b8dbbded1e'
-SPOTIFY_CLIENT_SECRET = 'b8fec0f24b014b18873078e1686f2f75'
-GENIUS_TOKEN = 'ftLPWvHrNZ6BbdM90RJrQsvPqAwcEB0YEp258QR8HwwHkeSbmdfZxUy5QS1BAyMH'
-RAPID_API_KEY = '217c365061msh1789efd21bd655ap17f94bjsn585409af1cfd'
-RAPID_API_URL = "https://instagram-scraper-api-stories-reels-va-post.p.rapidapi.com/"
+SPOTIFY_CLIENT_ID = 'SPOTIFY CLIENT ID'
+SPOTIFY_CLIENT_SECRET = 'SPOTIFY CLIENT SECRET'
+GENIUS_TOKEN = 'GENIUS TOKEN FOR LYRICS'
+RAPID_API_KEY = 'fOR INSTA SCRAP NEED KEY'
+RAPID_API_URL = "FOR INSTA SCRAP NEED URL"
 
 # MongoDB Configuration
-MONGO_URI = "mongodb+srv://SmokieDownloader:SmokieOfficial@cluster0.pgqko.mongodb.net/Downloader?retryWrites=true&w=majority&appName=Cluster0"
+MONGO_URI = "MONGO URL"
 DB_NAME = "Downloader"
 USERS_COLLECTION = "users"
 
 # Terabox Configuration
-WEBAPP_URL = "https://teraboxdownloader.top/video.php"
+WEBAPP_URL = "MINI APP URL"
 TERABOX_IMAGE = "https://cdn.glitch.global/37127bbb-2499-443c-9bec-47899afdad04/photo_2024-12-20_23-41-03.jpg?v=1734718281072"
 NONVEG_IMAGE = "https://cdn.glitch.global/37127bbb-2499-443c-9bec-47899afdad04/photo_2024-12-21_00-00-51.jpg?v=1734719485408"
-TERABOX_API_URL = "https://terabox-online-player-and-downloader-api.p.rapidapi.com/"
-RAPIDAPI_KEY = "217c365061msh1789efd21bd655ap17f94bjsn585409af1cfd"
-RAPIDAPI_HOST = "terabox-online-player-and-downloader-api.p.rapidapi.com"
+TERABOX_API_URL = "API NEED FOR TERABOX"
+RAPIDAPI_KEY = "TERABOX API"
+RAPIDAPI_HOST = "HOST FOR TERABOX"
 
 
 # Constants
@@ -1092,7 +1092,7 @@ class CombinedDownloaderBot:
             [
                 InlineKeyboardButton(
                     text="Non Veg Reels",
-                    web_app=WebAppInfo(url="https://fikfap.com/")
+                    web_app=WebAppInfo(url="NON VEG MINI URL")#CHANGE WITH YOUR NON VEG REEL URL
                 )
             ]
         ])
