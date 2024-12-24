@@ -68,6 +68,8 @@ The Media Downloader Bot allows you to seamlessly download media from various po
 - **/broadcast**: Broadcast to user
 - **/spotify**: Get The Track Of Song
 - **/audio**: Search and Download The Youtube Video In audio format
+- **/sptfylist**: Search top track of the artist
+- **/nonveg-reel**: get the top notch non veg reels
 
 ## Supported Platforms
 - **Instagram**
