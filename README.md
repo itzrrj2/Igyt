@@ -16,11 +16,11 @@ The Media Downloader Bot allows you to seamlessly download media from various po
 - **Simple Commands for Easy Use**
 
 ## Prerequisites
-- Python 3.7+
+- Python 3.10+
 - Requests Library
-- Telethon or Pyrogram (for Telegram bot)
+- Pyrogram (for Telegram bot)
 - Telegram Bot Token
-- API Credentials for platforms (if required)
+- API Credentials Check Env File
 
 ## Installation
 
@@ -39,27 +39,43 @@ The Media Downloader Bot allows you to seamlessly download media from various po
     sudo apt install ffmpeg
     ```
 
-4. Set up required variables:
+4. Set up Environment required variables:
     ```bash
-    TELEGRAM_API_ID=your_api_id
-    TELEGRAM_API_HASH=your_api_hash
-    TELEGRAM_BOT_TOKEN=your_bot_token
-    MONGO_URL=your_mongo_url
-    LOG_GROUP_ID=log channel id
-    OWNER_USERNAME=username of owner
-    SPOTIFY_CLIENT_ID=spotify client id
-    SPOTIFY_CLIENT_SECRET=spotify client secret
-    GENIUS_TOKEN=genius token for lyrics
-    RAPID_API_KEY= api key for instagram
-    RAPID_API_URL= api url for instagram
-    WEBAPP_URL= mini app url for terabox
-    TERABOX_API_URL= api url for terabox
-    RAPIDAPI_KEY= api key for terabox
-    RAPIDAPI_HOST= host for terabox
+    # API Credentials
+    API_ID=your_api_id_here
+    API_HASH=your_api_hash_here
+    BOT_TOKEN=your_bot_token_here
+    LOG_GROUP_ID=your_log_group_id_here
+    OWNER_USERNAME=your_owner_username_here
+    
+    # Spotify Credentials
+    SPOTIFY_CLIENT_ID=your_spotify_client_id_here
+    SPOTIFY_CLIENT_SECRET=your_spotify_client_secret_here
+    
+    # Genius API
+    GENIUS_TOKEN=your_genius_token_here
+    
+    # RapidAPI Configuration
+    RAPID_API_KEY=your_rapid_api_key_here
+    RAPID_API_URL=your_rapid_api_url_here
+    
+    # MongoDB Configuration
+    MONGO_URI=your_mongo_uri_here
+    DB_NAME=your_db_name_here
+    USERS_COLLECTION=your_users_collection_here
+    
+    # Terabox Configuration
+    WEBAPP_URL=your_webapp_url_here
+    TERABOX_IMAGE=your_terabox_image_url_here
+    NONVEG_IMAGE=your_nonveg_image_url_here
+    TERABOX_API_URL=your_terabox_api_url_here
+    RAPIDAPI_HOST=your_rapidapi_host_here
+
     ```
 5. Need 3 Directory:
   - temp
   - temp_media
+  - downloads
 
 ## Configuration
 - Ensure the necessary API credentials are provided for each supported platform.
