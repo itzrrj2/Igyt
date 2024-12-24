@@ -7,6 +7,9 @@ WORKDIR /app
 # Copy the current directory contents into the container
 COPY . /app
 
+# Copy the .env file into the container
+COPY .env /app/.env
+
 # Install necessary system dependencies
 RUN apt-get update && apt-get install -y \
     libgl1 \
@@ -20,4 +23,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN mkdir -p temp temp_media
 
 # Run the bot script
-CMD ["python", "main.py"]
+CMD ["python", "Downloader.py"]
