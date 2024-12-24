@@ -33,17 +33,29 @@ The Media Downloader Bot allows you to seamlessly download media from various po
     ```bash
     pip install -r requirements.txt
 
-   **Sudo Commands**
+3. Sudo Cammand To Install:
+    ```bash
     sudo apt install libgl1
     sudo apt install ffmpeg
     ```
 
-3. Set up environment variables:
+4. Set up required variables:
     ```bash
-    export TELEGRAM_API_ID=your_api_id
-    export TELEGRAM_API_HASH=your_api_hash
-    export TELEGRAM_BOT_TOKEN=your_bot_token
-    export MONGO_URL=your_mongo_url
+    TELEGRAM_API_ID=your_api_id
+    TELEGRAM_API_HASH=your_api_hash
+    TELEGRAM_BOT_TOKEN=your_bot_token
+    MONGO_URL=your_mongo_url
+    LOG_GROUP_ID=log channel id
+    OWNER_USERNAME=username of owner
+    SPOTIFY_CLIENT_ID=spotify client id
+    SPOTIFY_CLIENT_SECRET=spotify client secret
+    GENIUS_TOKEN=genius token for lyrics
+    RAPID_API_KEY= api key for instagram
+    RAPID_API_URL= api url for instagram
+    WEBAPP_URL= mini app url for terabox
+    TERABOX_API_URL= api url for terabox
+    RAPIDAPI_KEY= api key for terabox
+    RAPIDAPI_HOST= host for terabox
     ```
 
 ## Configuration
