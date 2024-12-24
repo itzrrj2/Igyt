@@ -32,6 +32,10 @@ The Media Downloader Bot allows you to seamlessly download media from various po
 2. Install required dependencies:
     ```bash
     pip install -r requirements.txt
+
+   **Sudo Commands**
+    sudo apt install libgl1
+    sudo apt install ffmpeg
     ```
 
 3. Set up environment variables:
