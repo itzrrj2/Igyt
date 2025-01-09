@@ -7,6 +7,8 @@ import time
 import shutil
 import humanize
 import math
+import pyrogram
+import requests
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from pathlib import Path
@@ -28,9 +30,6 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from pyrogram.types import Message, InlineKeyboardMarkup
 from pyrogram.errors import FloodWait, InputUserDeactivated, UserIsBlocked, PeerIdInvalid
 import asyncio
-from dotenv import load_dotenv
-
-load_dotenv()
 
 # Setup logging
 logging.basicConfig(
@@ -41,37 +40,25 @@ logger = logging.getLogger(__name__)
 yt_dlp.utils.bug_reports_message = lambda: ''
 logging.getLogger('yt_dlp').setLevel(logging.CRITICAL)
 
-
-# API Credentials
-api_id = os.getenv("API_ID")
-api_hash = os.getenv("API_HASH")
-bot_token = os.getenv("BOT_TOKEN")
-log_group_id = int(os.getenv("LOG_GROUP_ID"))
-owner_username = os.getenv("OWNER_USERNAME")
-
-# Spotify Credentials
-spotify_client_id = os.getenv("SPOTIFY_CLIENT_ID")
-spotify_client_secret = os.getenv("SPOTIFY_CLIENT_SECRET")
-
-# Genius API
-genius_token = os.getenv("GENIUS_TOKEN")
-
-# RapidAPI Configuration
-rapid_api_key = os.getenv("RAPID_API_KEY")
-rapid_api_url = os.getenv("RAPID_API_URL")
+# Configure your API credentials
+API_ID = "27233487"
+API_HASH = "ceeed1a68ce9bed3910c8e1f83c499e4"
+BOT_TOKEN = "7993147856:AAG7JcZjpduYEetw-h6wBUWYnO_EW4n_tt4"
+LOG_GROUP_ID = -1001806351030  # Replace with your logging group ID
+OWNER_USERNAME = "@Hmm_Smokie"
+OWNER_ID = 1949883614 
+SPOTIFY_CLIENT_ID = 'c623bcd2b3024663b0c094b8dbbded1e'
+SPOTIFY_CLIENT_SECRET = 'b8fec0f24b014b18873078e1686f2f75'
+GENIUS_TOKEN = 'ftLPWvHrNZ6BbdM90RJrQsvPqAwcEB0YEp258QR8HwwHkeSbmdfZxUy5QS1BAyMH'
+RAPID_API_KEY = '217c365061msh1789efd21bd655ap17f94bjsn585409af1cfd'
+RAPID_API_URL = "https://instagram-scraper-api-stories-reels-va-post.p.rapidapi.com/"
 
 # MongoDB Configuration
-mongo_uri = os.getenv("MONGO_URI")
-db_name = os.getenv("DB_NAME")
-users_collection = os.getenv("USERS_COLLECTION")
-
-# Terabox Configuration
-webapp_url = os.getenv("WEBAPP_URL")
-terabox_image = os.getenv("TERABOX_IMAGE")
-nonveg_image = os.getenv("NONVEG_IMAGE")
-terabox_api_url = os.getenv("TERABOX_API_URL")
-rapidapi_host = os.getenv("RAPIDAPI_HOST")
-
+MONGO_URI = "mongodb+srv://SmokieDownloader:SmokieOfficial@cluster0.pgqko.mongodb.net/Downloader?retryWrites=true&w=majority&appName=Cluster0"
+DB_NAME = "Downloader"
+USERS_COLLECTION = "users"
+MAINTENANCE_COLLECTION = "maintenance"
+VALID_PLATFORMS = ["facebook", "instagram", "twitter", "youtube", "spotify", "pinterest", "all"]
 
 # Constants
 MAX_CONCURRENT_DOWNLOADS = 1000
@@ -110,27 +97,25 @@ class TelegramLogger:
         """Log user actions (downloads, searches, etc.)"""
         user_mention = f"[{first_name}](tg://user?id={user_id})"
         action_types = {
-            "spotify": "🎵 Spotify Download",
-            "spotify_list": "🎼 Spotify Artist List",
-            "facebook": "📘 Facebook Download",
-            "twitter": "🐦 Twitter Download",
-            "youtube": "📺 YouTube Download",
-            "youtube_audio": "🎧 YouTube Audio Download",
-            "instagram": "📸 Instagram Download",
-            "terabox": "📦 TeraBox Download",
-            "pinterest": "📌 Pinterest Download",
-            "nonveg_reels": "🎬 Special Reels",
-            "audio": "🎧 Audio Download"
+            "spotify": "🎵 ѕρσтιƒу ∂σωηℓσα∂",
+            "spotify_list": "🎼 ѕρσтιƒу αятιѕт ℓιѕт",
+            "facebook": "📘 ƒα¢євσσк ∂σωηℓσα∂",
+            "twitter": "🐦 тωιттєя ∂σωηℓσα∂",
+            "youtube": "📺 уσυтυвє ∂σωηℓσα∂",
+            "youtube_audio": "🎧 уσυтυвє αυ∂ισ ∂σωηℓσα∂",
+            "instagram": "📸 ιηѕтαgяαм ∂σωηℓσα∂",
+            "pinterest": "📌 ριηтєяєѕт ∂σωηℓσα∂",
+            "audio": "🎧 αυ∂ισ ∂σωηℓσα∂"
         }
         
         action_name = action_types.get(action_type, "🔍 Unknown Action")
         log_text = (
-            f"⚡️ **New Request**\n\n"
-            f"👤 **User:** {user_mention}\n"
-            f"🎯 **Action:** {action_name}\n"
-            f"🔍 **Query:** `{query}`\n"
-            f"🆔 **User ID:** `{user_id}`\n"
-            f"👾 **Username:** @{username}" if username else "None"
+            f"⚡️ **𝙽𝚎𝚠 𝚁𝚎𝚚𝚞𝚎𝚜𝚝**\n\n"
+            f"👤 **Uʂҽɾ:** {user_mention}\n"
+            f"🎯 **Aƈƚισɳ:** {action_name}\n"
+            f"🔍 **Qυҽɾყ:** `{query}`\n"
+            f"🆔 **Uʂҽɾ ID:** `{user_id}`\n"
+            f"👾 **Uʂҽɾɳαɱҽ:** @{username}" if username else "None"
         )
         await self.bot.send_message(self.log_group_id, log_text)
 
@@ -384,16 +369,19 @@ class MediaProcessor:
     async def download_file(self, url, filename):
         async with asyncio.Semaphore(MAX_CONCURRENT_DOWNLOADS):
             try:
-                async with self.session.get(url) as response:
-                    if response.status != 200:
-                        return None
+                def download_with_requests(url, filename):
+                    response = requests.get(url, stream=True)
+                    response.raise_for_status()
+                    with open(filename, 'wb') as file:
+                        for chunk in response.iter_content(chunk_size=8192):
+                            file.write(chunk)
+                    return filename
                     
-                    with open(filename, 'wb') as f:
-                        async for chunk in response.content.iter_chunked(8192):
-                            f.write(chunk)
-                return filename
+                return await self.run_in_thread(download_with_requests, url, filename)
             except Exception as e:
                 logger.error(f"Download error: {e}")
+                if os.path.exists(filename):
+                    os.remove(filename)
                 return None
 
     async def validate_and_process_media(self, media_info, default_caption='📸 Instagram Media', prefix='temp'):
@@ -460,7 +448,57 @@ class MediaProcessor:
             'caption': media_info.get('caption', default_caption)
         }
 
+class MaintenanceManager:
+    def __init__(self, db):
+        self.maintenance_collection = db[MAINTENANCE_COLLECTION]
+        
+    async def set_maintenance(self, platform: str, enabled: bool) -> bool:
+        """Set maintenance status for a platform"""
+        try:
+            if platform == "all":
+                # Update all platforms
+                for p in VALID_PLATFORMS:
+                    if p != "all":
+                        await self.maintenance_collection.update_one(
+                            {"platform": p},
+                            {"$set": {"enabled": enabled}},
+                            upsert=True
+                        )
+            else:
+                # Update specific platform
+                await self.maintenance_collection.update_one(
+                    {"platform": platform},
+                    {"$set": {"enabled": enabled}},
+                    upsert=True
+                )
+            return True
+        except Exception as e:
+            logger.error(f"Error setting maintenance mode: {e}")
+            return False
+
+    async def is_platform_under_maintenance(self, platform: str) -> bool:
+        """Check if a platform is under maintenance"""
+        try:
+            maintenance_status = await self.maintenance_collection.find_one({"platform": platform})
+            return maintenance_status.get("enabled", False) if maintenance_status else False
+        except Exception as e:
+            logger.error(f"Error checking maintenance status: {e}")
+            return False
+
+    async def get_maintenance_status(self) -> Dict[str, bool]:
+        """Get maintenance status for all platforms"""
+        try:
+            status = {}
+            async for doc in self.maintenance_collection.find({}):
+                status[doc["platform"]] = doc["enabled"]
+            return status
+        except Exception as e:
+            logger.error(f"Error getting maintenance status: {e}")
+            return {}
+
 class CombinedDownloaderBot:
+    TEMP_DIR = Path("temp")
+    TEMP_MEDIA_DIR = Path("temp_media")
     def __init__(self):
         # Initialize Pyrogram client
         self.app = Client(
@@ -501,6 +539,7 @@ class CombinedDownloaderBot:
         self.mongo_client = AsyncIOMotorClient(MONGO_URI)
         self.db = self.mongo_client[DB_NAME]
         self.users_collection = self.db[USERS_COLLECTION]
+        self.maintenance_manager = MaintenanceManager(self.db)
 
         self.CHANNEL_USERNAME = "@SmokieOfficial"  # Replace with your channel username
         self.OWNER_USERNAME = "@Hmm_Smokie"  # Replace with your username
@@ -514,15 +553,61 @@ class CombinedDownloaderBot:
         self.user_tasks = defaultdict(set)
         self.callback_query_handlers = {}
 
-        # Ensure temp directory exists and is clean
-        TEMP_DIR.mkdir(parents=True, exist_ok=True)
+        # Create temp directories if they don't exist
+        self.TEMP_DIR.mkdir(parents=True, exist_ok=True)
+        self.TEMP_MEDIA_DIR.mkdir(parents=True, exist_ok=True)
+        
+        # Initial cleanup
         self.cleanup_temp_directory()
+        self.cleanup_temp_media_directory()
 
     async def initialize(self):
         """Initialize aiohttp session and media processor"""
         self.session = aiohttp.ClientSession()
         self.media_processor = MediaProcessor(self.session)
         return self
+
+    def cleanup_temp_media_directory(self):
+        """Clean up the temp_media directory"""
+        try:
+            if self.TEMP_MEDIA_DIR.exists():
+                # Remove contents but keep directory
+                for item in self.TEMP_MEDIA_DIR.iterdir():
+                    if item.is_file():
+                        item.unlink()
+                    elif item.is_dir():
+                        shutil.rmtree(item)
+                logger.info("Temp media directory cleaned successfully")
+        except Exception as e:
+            logger.error(f"Error cleaning temp_media directory: {e}")
+
+    async def reboot_bot(self, message: Message):
+        """Handle bot reboot command"""
+        try:
+            # Send initial status
+            status_msg = await message.reply_text("🔄 Initiating reboot process...")
+
+            # Clean temp directories
+            await asyncio.get_event_loop().run_in_executor(
+                None, self.cleanup_temp_directory
+            )
+            await asyncio.get_event_loop().run_in_executor(
+                None, self.cleanup_temp_media_directory
+            )
+
+            # Update status with cleaning results
+            await status_msg.edit_text(
+                "♻️ Reboot Status:\n"
+                "✅ Bot services operational\n\n"
+                "🤖 Bot is ready to use!"
+            )
+
+        except Exception as e:
+            logger.error(f"Reboot error: {e}")
+            await status_msg.edit_text(
+                "❌ Error during reboot process\n\n"
+                f"Error details: {str(e)}"
+            )
 
     async def cleanup(self):
         """Cleanup resources"""
@@ -638,6 +723,99 @@ class CombinedDownloaderBot:
             text,
             reply_markup=self.get_membership_keyboard()
         )
+
+    async def handle_cookie_upload(self, message: Message):
+        """Handle cookie file upload command"""
+        if str(message.from_user.id) != "1949883614" and message.from_user.username != self.OWNER_USERNAME.replace("@", ""):
+            await message.reply_text("⛔️ This command is only for the bot owner.")
+            return
+
+        if not message.reply_to_message or not message.reply_to_message.document:
+            await message.reply_text(
+                "❗️ Please reply to a cookies.txt file with the /addcookie command."
+            )
+            return
+
+        document = message.reply_to_message.document
+        if document.file_name != "cookies.txt":
+            await message.reply_text(
+                "❌ Invalid file! Please upload a file named 'cookies.txt'"
+            )
+            return
+
+        status_msg = await message.reply_text("⏳ Downloading cookie file...")
+        
+        try:
+            # Download and replace the cookie file directly
+            await message.reply_to_message.download(
+                file_name=YT_COOKIES_PATH
+            )
+            
+            await status_msg.edit_text("✅ Cookie file successfully updated!")
+
+        except Exception as e:
+            logger.error(f"Error updating cookie file: {e}")
+            await status_msg.edit_text(
+                "❌ Failed to update cookie file. Error has been logged."
+            )
+
+    async def check_maintenance(self, platform: str) -> bool:
+        """
+        Check if platform is under maintenance and send message if it is
+        Returns: True if under maintenance, False otherwise
+        """
+        if await self.maintenance_manager.is_platform_under_maintenance(platform):
+            return True
+        return False
+
+    async def send_maintenance_message(self, message: Message, platform: str):
+        """Send maintenance message to user"""
+        maintenance_text = (
+            f"🛠 **Maintenance Mode**\n\n"
+            f"The {platform} download service is currently under maintenance.\n"
+            "We apologize for the inconvenience.\n"
+            f"Please try again later or contact {OWNER_USERNAME} for updates."
+        )
+        await message.reply_text(maintenance_text)
+
+    async def handle_maintenance_command(self, client: Client, message: Message):
+        """Handle /maintenance command"""
+        # Check if user is owner by username or ID
+        if (message.from_user.username != self.OWNER_USERNAME.replace("@", "") and 
+            message.from_user.id != OWNER_ID):
+            await message.reply_text("⛔️ This command is only for the bot owner.")
+            return
+
+        # Parse command arguments
+        args = message.text.split()
+        if len(args) != 3:
+            await message.reply_text(
+                "❌ Invalid format. Use:\n"
+                "/maintenance <enable/disable> <platform>\n"
+                "Platforms: facebook, instagram, twitter, youtube, spotify, pinterest, all"
+            )
+            return
+
+        action = args[1].lower()
+        platform = args[2].lower()
+
+        if action not in ["enable", "disable"]:
+            await message.reply_text("❌ Invalid action. Use 'enable' or 'disable'.")
+            return
+
+        if platform not in VALID_PLATFORMS:
+            await message.reply_text(f"❌ Invalid platform. Valid platforms: {', '.join(VALID_PLATFORMS)}")
+            return
+
+        enabled = action == "enable"
+        success = await self.maintenance_manager.set_maintenance(platform, enabled)
+
+        if success:
+            status = "enabled" if enabled else "disabled"
+            platform_text = "all platforms" if platform == "all" else f"platform '{platform}'"
+            await message.reply_text(f"✅ Maintenance mode {status} for {platform_text}.")
+        else:
+            await message.reply_text("❌ Failed to update maintenance status.")
 
     @staticmethod
     def create_progress_bar(current, total, length=20):
@@ -1009,110 +1187,6 @@ class CombinedDownloaderBot:
             return True
         return False
 
-    async def fetch_terabox_api(self, link: str) -> Dict[str, Any]:
-        """Async function to fetch data from Terabox API"""
-        headers = {
-            "x-rapidapi-key": RAPIDAPI_KEY,
-            "x-rapidapi-host": RAPIDAPI_HOST,
-        }
-        params = {"link": link}
-        
-        async with self.download_semaphore:
-            try:
-                async with self.session.get(TERABOX_API_URL, headers=headers, params=params) as response:
-                    return await response.json()
-            except Exception as e:
-                logger.error(f"API request failed: {e}")
-                raise
-
-    def create_terabox_markup(self, video_id: str, download_link: str) -> InlineKeyboardMarkup:
-        """Create inline keyboard markup for Terabox links"""
-        return InlineKeyboardMarkup([
-            [
-                InlineKeyboardButton(
-                    "▶️ Watch Online", 
-                    web_app=WebAppInfo(url=f"{WEBAPP_URL}?id={video_id}")
-                ),
-                InlineKeyboardButton("📥 Download", url=download_link)
-            ]
-        ])
-
-    async def handle_terabox_link(self, client, message):
-        """Handle incoming Terabox links"""
-        terabox_link = message.text.strip()
-
-        try:
-            status_message = await message.reply_text("Processing your request...")
-            data = await self.fetch_terabox_api(terabox_link)
-
-            if "url" in data:
-                download_link = data["url"].replace("\\/", "/")
-                video_id = download_link.split("id=")[-1]
-                reply_markup = self.create_terabox_markup(video_id, download_link)
-
-                await status_message.delete()
-                await message.reply_photo(
-                    photo=TERABOX_IMAGE,
-                    caption="Boom! Your File Link is Good to Go!\n\nＰＯＷＥＲＥＤ ＢＹ ＰＯＲＮＨＵＢ Ｘ ＴＥＲＡＢＯＸ",
-                    reply_markup=reply_markup
-                )
-
-            elif "data" in data:
-                details = data.get("data", {})
-                file_name = details.get("file_name", "Unknown")
-                file_size = details.get("file_size", "Unknown")
-                download_link = details.get("download_link", "Unavailable")
-
-                reply_markup = InlineKeyboardMarkup([
-                    [
-                        InlineKeyboardButton(
-                            "📱 View in Mini App",
-                            web_app=WebAppInfo(url=f"{WEBAPP_URL}?filename={file_name}")
-                        ),
-                        InlineKeyboardButton("📥 Direct Download", url=download_link)
-                    ]
-                ])
-
-                reply_text = (
-                    f"**Terabox File Details:**\n"
-                    f"**Name:** {file_name}\n"
-                    f"**Size:** {file_size}"
-                )
-
-                await status_message.delete()
-                await message.reply_photo(
-                    photo=TERABOX_IMAGE,
-                    caption=reply_text,
-                    reply_markup=reply_markup
-                )
-
-            else:
-                await status_message.edit_text("Unexpected response format. Please check the link.")
-
-        except Exception as e:
-            logger.error(f"Error processing link: {str(e)}", exc_info=True)
-            await message.reply_text(
-                "An error occurred while processing your request. Please try again later."
-            )
-
-    async def handle_nonveg_reel(self, client, message):
-        """Handle the nonveg_reel command"""
-        keyboard = InlineKeyboardMarkup([
-            [
-                InlineKeyboardButton(
-                    text="Non Veg Reels",
-                    web_app=WebAppInfo(url="NON VEG MINI URL")#CHANGE WITH YOUR NON VEG REEL URL
-                )
-            ]
-        ])
-
-        await client.send_photo(
-            chat_id=message.chat.id,
-            photo=NONVEG_IMAGE,
-            caption="💥 Unlock your Mini App now! Just tap the button below!\n\nＰＯＷＥＲＥＤ ＢＹ ＰＯＲＮＨＵＢ Ｘ ＭＩＮＩ ＡＰＰ",
-            reply_markup=keyboard
-        )
-
     async def download_instagram_media(self, url, prefix='temp'):
         async with self.session.get(RAPID_API_URL, headers=self.rapid_api_headers, params={"url": url}) as response:
             if response.status != 200:
@@ -1206,30 +1280,65 @@ class CombinedDownloaderBot:
                 os.remove(media_info['filename'])
 
     async def _send_multiple_media_group(self, client, message, media_items):
-        media_group = []
+        media_groups = [media_items[i:i + 5] for i in range(0, len(media_items), 5)]
+        files_to_cleanup = set()
+        
         try:
-            for item in media_items:
-                if item['type'] == 'video':
-                    media_group.append(
-                        InputMediaVideo(
-                            media=item['filename'],
-                            caption=item['caption'] if len(media_group) == 0 else None
-                        )
-                    )
-                elif item['type'] == 'image':
-                    media_group.append(
-                        InputMediaPhoto(
-                            media=item['filename'],
-                            caption=item['caption'] if len(media_group) == 0 else None
-                        )
-                    )
+            for group_index, group in enumerate(media_groups):
+                valid_media_group = []
+                
+                for item in group:
+                    try:
+                        # Verify file exists and is valid
+                        if not os.path.exists(item['filename']) or os.path.getsize(item['filename']) == 0:
+                            logger.error(f"Invalid or empty file: {item['filename']}")
+                            continue
+                            
+                        caption = item['caption'] if len(valid_media_group) == 0 else None
+                        if group_index > 0 and len(valid_media_group) == 0:
+                            caption = f"Stories Part {group_index + 1}\n\n{caption}" if caption else f"Stories Part {group_index + 1}"
+                        
+                        media_item = None
+                        if item['type'] == 'video':
+                            media_item = pyrogram.types.InputMediaVideo(
+                                media=item['filename'],
+                                caption=caption
+                            )
+                        elif item['type'] == 'image':
+                            media_item = pyrogram.types.InputMediaPhoto(
+                                media=item['filename'],
+                                caption=caption
+                            )
+                        
+                        if media_item:
+                            valid_media_group.append(media_item)
+                            files_to_cleanup.add(item['filename'])
+                    except Exception as e:
+                        logger.error(f"Media item error: {e}")
+                        continue
 
-            if media_group:
-                await client.send_media_group(chat_id=message.chat.id, media=media_group)
+                if valid_media_group:
+                    try:
+                        await client.send_media_group(chat_id=message.chat.id, media=valid_media_group)
+                        await asyncio.sleep(2)
+                    except Exception as e:
+                        logger.warning("Invalid media content" if "MEDIA_EMPTY" in str(e) else f"Failed to send message: {str(e)}")
+                        # Try sending valid items individually
+                        for media_item in valid_media_group:
+                            try:
+                                if isinstance(media_item, pyrogram.types.InputMediaVideo):
+                                    await client.send_video(message.chat.id, media_item.media, caption=media_item.caption)
+                                elif isinstance(media_item, pyrogram.types.InputMediaPhoto):
+                                    await client.send_photo(message.chat.id, media_item.media, caption=media_item.caption)
+                                await asyncio.sleep(1)
+                            except Exception as inner_e:
+                                logger.error(f"Individual send error: {inner_e}")
+        
         finally:
-            for item in media_items:
-                if os.path.exists(item['filename']):
-                    os.remove(item['filename'])
+            for filename in files_to_cleanup:
+                if os.path.exists(filename):
+                    os.remove(filename)
+
     async def handle_pinterest_link(self, client, message):
         """Handle Pinterest link downloads"""
         url = message.text.strip()
@@ -1672,30 +1781,6 @@ class CombinedDownloaderBot:
         instagram_pattern = r'(instagram\.com/(reel/|p/|stories/|s/aGlnaGxpZ2h0).*?)'
         pinterest_pattern = r'(pinterest\.com/pin/|pin\.it/)'
 
-        # For TeraBox handler
-        @self.app.on_message(filters.regex(r"terasharelink\.com|1024terabox\.com|teraboxlink\.com|terafileshare\.com|teraboxapp\.com|teraboxshare\.com"))
-        async def on_terabox_link(client, message):
-            if not await self.check_membership(client, message.from_user.id):
-                await self.send_membership_message(message)
-                return
-            
-            # Log the action
-            await self.logger.log_user_action(
-                message.from_user.id,
-                message.from_user.username,
-                message.from_user.first_name,
-                "terabox",
-                message.text
-            )
-            
-            # Store user data and continue with existing handler
-            await self.store_user(
-                message.from_user.id,
-                message.from_user.username or "No username"
-            )
-            
-            await self.handle_terabox_link(client, message)
-
         @self.app.on_message(filters.regex(social_media_pattern))
         async def on_media_link(client, message):
             if not await self.check_membership(client, message.from_user.id):
@@ -1703,6 +1788,11 @@ class CombinedDownloaderBot:
                 return
             
             platform = "facebook" if "facebook" in message.text or "fb.watch" in message.text else "twitter"
+            
+            # Add maintenance check here
+            if await self.check_maintenance(platform):
+                await self.send_maintenance_message(message, platform)
+                return
             
             await self.logger.log_user_action(
                 message.from_user.id,
@@ -1712,7 +1802,6 @@ class CombinedDownloaderBot:
                 message.text
             )
             
-            # Store user data
             await self.store_user(
                 message.from_user.id,
                 message.from_user.username or "No username"
@@ -1728,7 +1817,11 @@ class CombinedDownloaderBot:
                 await self.send_membership_message(message)
                 return
             
-            # Log the action
+            # Add maintenance check here
+            if await self.check_maintenance("instagram"):
+                await self.send_maintenance_message(message, "instagram")
+                return
+            
             await self.logger.log_user_action(
                 message.from_user.id,
                 message.from_user.username,
@@ -1737,7 +1830,6 @@ class CombinedDownloaderBot:
                 message.text
             )
             
-            # Store user data and continue with existing handler
             await self.store_user(
                 message.from_user.id,
                 message.from_user.username or "No username"
@@ -1751,7 +1843,11 @@ class CombinedDownloaderBot:
                 await self.send_membership_message(message)
                 return
             
-            # Log the action
+            # Add maintenance check here
+            if await self.check_maintenance("pinterest"):
+                await self.send_maintenance_message(message, "pinterest")
+                return
+            
             await self.logger.log_user_action(
                 message.from_user.id,
                 message.from_user.username,
@@ -1760,7 +1856,6 @@ class CombinedDownloaderBot:
                 message.text
             )
             
-            # Store user data and continue with existing handler
             await self.store_user(
                 message.from_user.id,
                 message.from_user.username or "No username"
@@ -1772,30 +1867,39 @@ class CombinedDownloaderBot:
 
         @self.app.on_message(filters.regex(r"^(https?://)?(www\.)?(youtube\.com|youtu\.be)/.+$"))
         async def youtube_link_handler(client, message):
-            if not await self.check_membership(client, message.from_user.id):
-                await self.send_membership_message(message)
-                return
-            
-            await self.logger.log_user_action(
-                message.from_user.id,
-                message.from_user.username,
-                message.from_user.first_name,
-                "youtube",
-                message.text
-            )
-                        
-            # Store user data
-            await self.store_user(
-                message.from_user.id,
-                message.from_user.username or "No username"
-            )
-            
-            await self.handle_youtube_download(client, message, message.text.strip())
+                if not await self.check_membership(client, message.from_user.id):
+                    await self.send_membership_message(message)
+                    return
+                
+                # Add maintenance check here
+                if await self.check_maintenance("youtube"):
+                    await self.send_maintenance_message(message, "youtube")
+                    return
+                
+                await self.logger.log_user_action(
+                    message.from_user.id,
+                    message.from_user.username,
+                    message.from_user.first_name,
+                    "youtube",
+                    message.text
+                )
+                
+                await self.store_user(
+                    message.from_user.id,
+                    message.from_user.username or "No username"
+                )
+                
+                await self.handle_youtube_download(client, message, message.text.strip())
 
         @self.app.on_message(filters.command("audio"))
         async def audio_command(client, message):
             if not await self.check_membership(client, message.from_user.id):
                 await self.send_membership_message(message)
+                return
+            
+            # Add maintenance check here
+            if await self.check_maintenance("youtube"):  # Using youtube since it's for YouTube audio
+                await self.send_maintenance_message(message, "youtube")
                 return
 
             query = message.text.split(maxsplit=1)[1] if len(message.text.split()) > 1 else None
@@ -1803,7 +1907,6 @@ class CombinedDownloaderBot:
                 await message.reply_text("❌ Please provide a YouTube video link or song name.")
                 return
             
-            # Log the action
             await self.logger.log_user_action(
                 message.from_user.id,
                 message.from_user.username,
@@ -1812,7 +1915,6 @@ class CombinedDownloaderBot:
                 query
             )
             
-            # Store user data and continue with existing handler
             await self.store_user(
                 message.from_user.id,
                 message.from_user.username or "No username"
@@ -1835,10 +1937,13 @@ class CombinedDownloaderBot:
                 await self.send_membership_message(message)
                 return
 
-            # Get the query first
+            # Add maintenance check here
+            if await self.check_maintenance("spotify"):
+                await self.send_maintenance_message(message, "spotify")
+                return
+
             query = ' '.join(message.command[1:]).strip()
-             
-            # Log the action regardless of whether query is empty
+            
             await self.logger.log_user_action(
                 message.from_user.id,
                 message.from_user.username,
@@ -1847,13 +1952,11 @@ class CombinedDownloaderBot:
                 query if query else "No query provided"
             )
 
-            # Store user data
             await self.store_user(
                 message.from_user.id,
                 message.from_user.username or "No username"
             )
 
-            # Check if query is empty after logging
             if not query:
                 await message.reply_text(
                     "Please provide a song name. Usage: /spotify <Song Name>"
@@ -1891,33 +1994,27 @@ class CombinedDownloaderBot:
             )
             
             await self.process_artist_request(client, message, artist_name)
+        @self.app.on_message(filters.command("maintenance"))
+        async def maintenance_command(client, message):
+            await self.handle_maintenance_command(client, message)
 
-        @self.app.on_message(filters.command("nonveg_reel"))
-        async def on_nonveg_reel(client, message):
-            if not await self.check_membership(client, message.from_user.id):
-                await self.send_membership_message(message)
+        @self.app.on_message(filters.command("reboot"))
+        async def reboot_handler(client, message):
+            # Check if the user is the owner
+            if (message.from_user.username != self.OWNER_USERNAME.replace("@", "") and 
+                str(message.from_user.id) != "1949883614"):  # Your owner ID
+                await message.reply_text("⛔️ This command is only for the bot owner.")
                 return
             
-            # Log the action
-            await self.logger.log_user_action(
-                message.from_user.id,
-                message.from_user.username,
-                message.from_user.first_name,
-                "nonveg_reels",
-                "Requested non-veg reels"
-            )
-            
-            # Store user data and continue with existing handler
-            await self.store_user(
-                message.from_user.id,
-                message.from_user.username or "No username"
-            )
-            
-            await self.handle_nonveg_reel(client, message)
+            await self.reboot_bot(message)
 
         @self.app.on_message(filters.command("broadcast") & filters.user(OWNER_USERNAME))
         async def broadcast_cmd(client, message):
             await self.broadcast_handler(client, message)
+
+        @self.app.on_message(filters.command("addcookie"))
+        async def addcookie_handler(client, message):
+            await self.handle_cookie_upload(message)
 
         @self.app.on_message(filters.command("users") & filters.user(OWNER_USERNAME))
         async def user_count(client, message: Message):
@@ -1946,29 +2043,26 @@ class CombinedDownloaderBot:
                     await callback_query.message.delete()
                     # Send welcome message
                     welcome_text = (
-                        "🎉 **Welcome to the Ultimate Media Downloader Bot!**\n\n"
-                        "I can help you download your favorite content:\n\n"
+                        "🎉 **𝐖𝐞𝐥𝐜𝐨𝐦𝐞 𝐭𝐨 𝐭𝐡𝐞 𝐔𝐥𝐭𝐢𝐦𝐚𝐭𝐞 𝐌𝐞𝐝𝐢𝐚 𝐃𝐨𝐰𝐧𝐥𝐨𝐚𝐝𝐞𝐫 𝐁𝐨𝐭!**\n\n"
+                        "**I can help you download your favorite content:**\n\n"
                         "📥 **Features:**\n"
-                        "• Download YouTube videos & shorts\n"
-                        "• Download Facebook videos\n"
-                        "• Download Public Instagram reels, story, highlights, post, igtv\n"
-                        "• Download Twitter/X videos\n"
-                        "• Download Spotify songs\n"
-                        "• Download & Watch Terabox Content\n"
-                        "• Download Pinterest images & videos\n"
-                        "• Watch Non-Veg Content\n"
-                        "• Get artist's top tracks\n\n"
+                        "**• Download YouTube videos & shorts**\n"
+                        "**• Download Facebook videos**\n"
+                        "**• Download Instagram reels, story, highlights, post**\n"
+                        "**• Download Twitter/X videos**\n"
+                        "**• Download Spotify songs**\n"
+                        "**• Download Pinterest images & videos**\n"
+                        "**• Get artist's top tracks**\n\n"
                         "🎯 **How to Use:**\n"
-                        "• Simply send a Facebook, Twitter/X, Terabox/Non-Veg video link\n"
-                        "▫️ /audio [YouTube URL] - Download audio from a video URL\n"
-                        "▫️ /audio [song name] - Search and download audio by name\n\n"
-                        "▫️ Use /spotify <song name> to download music\n"
-                        "▫️ Use /sptfylist <artist name> for top tracks\n"
-                        "▫️ Use /nonveg_reel for top non-veg reels\n\n"
-                        "✨ Join our channel for updates and support!"
+                        "**▫️ /audio [YouTube URL] - Download audio from a video URL**\n"
+                        "**▫️ /audio [song name] - Search and download audio by name**\n"
+                        "**▫️ Use /spotify <song name> to download music**\n"
+                        "**▫️ Use /sptfylist <artist name> for top tracks**\n"
+                        "**🫥 This Bot Works For Group Too \n**"
+                        "**✨ Join our channel for updates and support!**"
                     )
                     await callback_query.message.reply_animation(
-                        animation="https://cdn.glitch.global/8165267b-e8d9-4a47-a5f2-bc40cef0b65f/loading-15146_512.gif?v=1733936190678",
+                        animation="https://cdn.glitch.global/35a512a0-3e86-48fe-9399-09a76ad9a594/89811-615423284_medium.mp4?v=1736421176653",
                         caption=welcome_text,
                         reply_markup=self.get_welcome_keyboard()
                     )
@@ -1998,30 +2092,27 @@ class CombinedDownloaderBot:
             )
             # Send welcome GIF with message
             welcome_text = (
-                        "🎉 **Welcome to the Ultimate Media Downloader Bot!**\n\n"
-                        "I can help you download your favorite content:\n\n"
+                        "🎉 **𝐖𝐞𝐥𝐜𝐨𝐦𝐞 𝐭𝐨 𝐭𝐡𝐞 𝐔𝐥𝐭𝐢𝐦𝐚𝐭𝐞 𝐌𝐞𝐝𝐢𝐚 𝐃𝐨𝐰𝐧𝐥𝐨𝐚𝐝𝐞𝐫 𝐁𝐨𝐭!**\n\n"
+                        "**I can help you download your favorite content:**\n\n"
                         "📥 **Features:**\n"
-                        "• Download YouTube videos & shorts\n"
-                        "• Download Facebook videos\n"
-                        "• Download Public Instagram reels, story, highlights, post, igtv\n"
-                        "• Download Twitter/X videos\n"
-                        "• Download Spotify songs\n"
-                        "• Download & Watch Terabox Content\n"
-                        "• Download Pinterest images & videos\n"
-                        "• Watch Non-Veg Content\n"
-                        "• Get artist's top tracks\n\n"
+                        "**• Download YouTube videos & shorts**\n"
+                        "**• Download Facebook videos**\n"
+                        "**• Download Instagram reels, story, highlights, post**\n"
+                        "**• Download Twitter/X videos**\n"
+                        "**• Download Spotify songs**\n"
+                        "**• Download Pinterest images & videos**\n"
+                        "**• Get artist's top tracks**\n\n"
                         "🎯 **How to Use:**\n"
-                        "• Simply send a Facebook, Twitter/X, Terabox/Non-Veg video link\n"
-                        "▫️ /audio [YouTube URL] - Download audio from a video URL\n"
-                        "▫️ /audio [song name] - Search and download audio by name\n\n"
-                        "▫️ Use /spotify <song name> to download music\n"
-                        "▫️ Use /sptfylist <artist name> for top tracks\n"
-                        "▫️ Use /nonveg_reel for top non-veg reels\n\n"
-                        "✨ Join our channel for updates and support!"
+                        "**▫️ /audio [YouTube URL] - Download audio from a video URL**\n"
+                        "**▫️ /audio [song name] - Search and download audio by name**\n"
+                        "**▫️ Use /spotify <song name> to download music**\n"
+                        "**▫️ Use /sptfylist <artist name> for top tracks**\n"
+                        "**🫥 This Bot Works For Group Too \n**"
+                        "**✨ Join our channel for updates and support!**"
                     )
             try:
                 await message.reply_animation(
-                    animation="https://cdn.glitch.global/8165267b-e8d9-4a47-a5f2-bc40cef0b65f/loading-15146_512.gif?v=1733936190678",
+                    animation="https://cdn.glitch.global/35a512a0-3e86-48fe-9399-09a76ad9a594/89811-615423284_medium.mp4?v=1736421176653",
                     caption=welcome_text,
                     reply_markup=self.get_welcome_keyboard()
                 )
