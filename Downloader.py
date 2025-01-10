@@ -38,20 +38,20 @@ yt_dlp.utils.bug_reports_message = lambda: ''
 logging.getLogger('yt_dlp').setLevel(logging.CRITICAL)
 
 # Configure your API credentials
-API_ID = "27233487"
-API_HASH = "ceeed1a68ce9bed3910c8e1f83c499e4"
-BOT_TOKEN = "7993147856:AAG7JcZjpduYEetw-h6wBUWYnO_EW4n_tt4"
+API_ID = ""
+API_HASH = ""
+BOT_TOKEN = ":-h6wBUWYnO_EW4n_tt4"
 LOG_GROUP_ID = -1001806351030  # Replace with your logging group ID
 OWNER_USERNAME = "@Hmm_Smokie"
 OWNER_ID = 1949883614 
-SPOTIFY_CLIENT_ID = 'c623bcd2b3024663b0c094b8dbbded1e'
-SPOTIFY_CLIENT_SECRET = 'b8fec0f24b014b18873078e1686f2f75'
-GENIUS_TOKEN = 'ftLPWvHrNZ6BbdM90RJrQsvPqAwcEB0YEp258QR8HwwHkeSbmdfZxUy5QS1BAyMH'
-RAPID_API_KEY = '217c365061msh1789efd21bd655ap17f94bjsn585409af1cfd'
-RAPID_API_URL = "https://instagram-scraper-api-stories-reels-va-post.p.rapidapi.com/"
+SPOTIFY_CLIENT_ID = ''
+SPOTIFY_CLIENT_SECRET = ''
+GENIUS_TOKEN = ''
+RAPID_API_KEY = ''
+RAPID_API_URL = ""
 
 # MongoDB Configuration
-MONGO_URI = "mongodb+srv://SmokieDownloader:SmokieOfficial@cluster0.pgqko.mongodb.net/Downloader?retryWrites=true&w=majority&appName=Cluster0"
+MONGO_URI = ""
 DB_NAME = "Downloader"
 USERS_COLLECTION = "users"
 MAINTENANCE_COLLECTION = "maintenance"
