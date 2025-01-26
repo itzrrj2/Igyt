@@ -538,8 +538,8 @@ class CombinedDownloaderBot:
         self.users_collection = self.db[USERS_COLLECTION]
         self.maintenance_manager = MaintenanceManager(self.db)
 
-        self.CHANNEL_USERNAME = "@SmokieOfficial"  # Replace with your channel username
-        self.OWNER_USERNAME = "@Hmm_Smokie"  # Replace with your username
+        self.CHANNEL_USERNAME = "@SR_ROBOTS"  # Replace with your channel username
+        self.OWNER_USERNAME = "@SR_ADMINBOT"  # Replace with your username
 
         # Session and state management
         self.session = None
