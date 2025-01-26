@@ -38,21 +38,21 @@ yt_dlp.utils.bug_reports_message = lambda: ''
 logging.getLogger('yt_dlp').setLevel(logging.CRITICAL)
 
 # Configure your API credentials
-API_ID = ""
-API_HASH = ""
-BOT_TOKEN = ":-h6wBUWYnO_EW4n_tt4"
-LOG_GROUP_ID = -1001806351030  # Replace with your logging group ID
-OWNER_USERNAME = "@Hmm_Smokie"
-OWNER_ID = 1949883614 
-SPOTIFY_CLIENT_ID = ''
-SPOTIFY_CLIENT_SECRET = ''
-GENIUS_TOKEN = ''
+API_ID = "19593445"
+API_HASH = "f78a8ae025c9131d3cc57d9ca0fbbc30"
+BOT_TOKEN = "6808615864:AAGbh2cjz58XzS598shsS0rKKmermDb0-xc"
+LOG_GROUP_ID = -1002310068513  # Replace with your logging group ID
+OWNER_USERNAME = "@pipipix6"
+OWNER_ID = 7064434873 
+SPOTIFY_CLIENT_ID = '8c684853ce414ceaaf905fc02aba45cb'
+SPOTIFY_CLIENT_SECRET = 'a0bb568ee1f14555aeabda6a6b3087f1'
+GENIUS_TOKEN = 'roRIaltL_NS2Znma_p9XhqKIRmbXyaiZEF5KHHJym6p5kzwnVNnXO0cP7-x1t5Kl'
 RAPID_API_KEY = ''
 RAPID_API_URL = ""
 
 # MongoDB Configuration
-MONGO_URI = ""
-DB_NAME = "Downloader"
+MONGO_URI = "mongodb+srv://shresthforyt:imlolop112@helloyt.7tdkn.mongodb.net/?retryWrites=true&w=majority&appName=HelloYt"
+DB_NAME = "HelloYt"
 USERS_COLLECTION = "users"
 MAINTENANCE_COLLECTION = "maintenance"
 VALID_PLATFORMS = ["facebook", "instagram", "twitter", "youtube", "spotify", "pinterest", "all"]
