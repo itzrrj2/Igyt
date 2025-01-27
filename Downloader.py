@@ -47,8 +47,8 @@ OWNER_ID = 7064434873
 SPOTIFY_CLIENT_ID = '8c684853ce414ceaaf905fc02aba45cb'
 SPOTIFY_CLIENT_SECRET = 'a0bb568ee1f14555aeabda6a6b3087f1'
 GENIUS_TOKEN = 'roRIaltL_NS2Znma_p9XhqKIRmbXyaiZEF5KHHJym6p5kzwnVNnXO0cP7-x1t5Kl'
-RAPID_API_KEY = '87a113f54dmsh19220b5e19a5f1fp112d1cjsn260c6de87463'
-RAPID_API_URL = "social-download-all-in-one.p.rapidapi.com"
+RAPID_API_KEY = '41f61728e4msh7146a573b7a39fcp1baa1fjsn77a7b0f73bc8'
+RAPID_API_URL = "https://instagram-scraper-api-stories-reels-va-post.p.rapidapi.com/"
 
 # MongoDB Configuration
 MONGO_URI = "mongodb+srv://shresthforyt:imlolop112@helloyt.7tdkn.mongodb.net/?retryWrites=true&w=majority&appName=HelloYt"
