@@ -1462,7 +1462,7 @@ class CombinedDownloaderBot:
 
         user_id = message.from_user.id
         if user_id in self.active_downloads:
-            await message.reply_text("⚠️ Please wait for your current download to finish.\n IF BOT IS STUCK USE /clear")
+            await message.reply_text("⚠️ Please wait for your current download to finish.\n IF BOT IS STUCK MESSAGE ADMIN - @SR_ADMINXBOT")
             return
 
         status_message = await message.reply_text("⏳ Processing your request...")
@@ -1832,39 +1832,7 @@ class CombinedDownloaderBot:
                 message.from_user.username or "No username"
             )
             
-            await self.handle_instagram_url(client, message)
-   @self.app.on_message(filters.command("clear"))
-        async def clear_handler(client, message):
-            """Handle the /clear command to clear only the requesting user's downloads"""
-            if not await self.check_membership(client, message.from_user.id):
-                await self.send_membership_message(message)
-                return
-                
-            user_id = message.from_user.id
-            status_message = await message.reply_text("🔄 Clearing your downloads...")
-            
-            try:
-                had_active, had_files = await self.clear_user_downloads(user_id)
-                
-                if had_active or had_files:
-                    status_text = "✅ Your cleanup completed!\n\n"
-                    if had_active:
-                        status_text += "• Cancelled your active downloads\n"
-                    if had_files:
-                        status_text += "• Removed your downloaded files\n"
-                    status_text += "\nYou can now start new downloads."
-                    
-                    await status_message.edit_text(status_text)
-                else:
-                    await status_message.edit_text(
-                        "ℹ️ You have no active downloads or files to clear."
-                    )
-            except Exception as e:
-                logger.error(f"Error in clear handler for user {user_id}: {e}")
-                await status_message.edit_text(
-                    "❌ An error occurred while clearing your downloads.\n"
-                    "Please try again later or contact support if the issue persists."
-                )
+            await self.handle_instagram_url(client, 
 
         @self.app.on_message(filters.regex(pinterest_pattern))
         async def on_pinterest_link(client, message):
@@ -2031,7 +1999,7 @@ class CombinedDownloaderBot:
         async def reboot_handler(client, message):
             # Check if the user is the owner
             if (message.from_user.username != self.OWNER_USERNAME.replace("@", "") and 
-                str(message.from_user.id) != "1949883614"):  # Your owner ID
+                str(message.from_user.id) != "7064434873"):  # Your owner ID
                 await message.reply_text("⛔️ This command is only for the bot owner.")
                 return
             
@@ -2136,7 +2104,6 @@ class CombinedDownloaderBot:
                         "**▫️ /audio [song name] - Search and download audio by name**\n"
                         "**▫️ Use /spotify <song name> to download music**\n"
                         "**▫️ Use /sptfylist <artist name> for top tracks**\n"
-                        "**▫️ /clear - Clear your active downloads if they're stuck**\n"
                         "**🫥 This Bot Works For Group Too \n**"
                         "**✨ Join our channel for updates and support!**"
                     )
