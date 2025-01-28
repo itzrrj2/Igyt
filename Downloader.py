@@ -40,7 +40,7 @@ logging.getLogger('yt_dlp').setLevel(logging.CRITICAL)
 # Configure your API credentials
 API_ID = "19593445"
 API_HASH = "f78a8ae025c9131d3cc57d9ca0fbbc30"
-BOT_TOKEN = "6808615864:AAGbh2cjz58XzS598shsS0rKKmermDb0-xc"
+BOT_TOKEN = "7421097874:AAE_qujPwuvAFGrsWaN9-J_bgfoiYCNROwM"
 LOG_GROUP_ID = -1002310068513  # Replace with your logging group ID
 OWNER_USERNAME = "@pipipix6"
 OWNER_ID = 7064434873 
