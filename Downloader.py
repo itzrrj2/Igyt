@@ -44,11 +44,11 @@ BOT_TOKEN = "7421097874:AAE_qujPwuvAFGrsWaN9-J_bgfoiYCNROwM"
 LOG_GROUP_ID = -1002310068513  # Replace with your logging group ID
 OWNER_USERNAME = "@pipipix6"
 OWNER_ID = 7064434873 
-SPOTIFY_CLIENT_ID = '8c684853ce414ceaaf905fc02aba45cb'
 SPOTIFY_CLIENT_SECRET = 'a0bb568ee1f14555aeabda6a6b3087f1'
 GENIUS_TOKEN = 'roRIaltL_NS2Znma_p9XhqKIRmbXyaiZEF5KHHJym6p5kzwnVNnXO0cP7-x1t5Kl'
 RAPID_API_KEY = '41f61728e4msh7146a573b7a39fcp1baa1fjsn77a7b0f73bc8'
 RAPID_API_URL = "https://instagram-scraper-api-stories-reels-va-post.p.rapidapi.com/"
+
 
 # MongoDB Configuration
 MONGO_URI = "mongodb+srv://shresthforyt:imlolop112@helloyt.7tdkn.mongodb.net/?retryWrites=true&w=majority&appName=HelloYt"
@@ -538,8 +538,8 @@ class CombinedDownloaderBot:
         self.users_collection = self.db[USERS_COLLECTION]
         self.maintenance_manager = MaintenanceManager(self.db)
 
-        self.CHANNEL_USERNAME = "Xstream_links2"  # Replace with your channel username
-        self.OWNER_USERNAME = "@SR_ADMINxBOT"  # Replace with your username
+        self.CHANNEL_USERNAME = "@Xstream_Links2"  # Replace with your channel username
+        self.OWNER_USERNAME = "@Sr_Adminxbot"  # Replace with your username
 
         # Session and state management
         self.session = None
@@ -605,6 +605,84 @@ class CombinedDownloaderBot:
                 "❌ Error during reboot process\n\n"
                 f"Error details: {str(e)}"
             )
+
+    async def clear_user_downloads(self, user_id: int) -> Tuple[bool, bool]:
+        """
+        Clear active downloads and downloaded files for a specific user only
+        
+        Args:
+            user_id (int): The user ID whose downloads need to be cleared
+            
+        Returns:
+            Tuple[bool, bool]: (had_active_downloads, had_files_to_delete)
+        """
+        try:
+            had_active = False
+            had_files = False
+            
+            # 1. Clear only this user's active downloads
+            if user_id in self.active_downloads:
+                had_active = True
+                if isinstance(self.active_downloads[user_id], asyncio.Task):
+                    try:
+                        self.active_downloads[user_id].cancel()
+                    except Exception as e:
+                        logger.error(f"Error canceling task for user {user_id}: {e}")
+                del self.active_downloads[user_id]
+
+            # 2. Clear only this user's tasks from download_tasks
+            user_tasks = {task for task in self.download_tasks 
+                        if hasattr(task, 'user_id') and task.user_id == user_id}
+            for task in user_tasks:
+                try:
+                    task.cancel()
+                    self.download_tasks.discard(task)
+                except Exception as e:
+                    logger.error(f"Error canceling download task: {e}")
+
+            # 3. Clean up only this user's directory
+            user_dir = self.TEMP_DIR / str(user_id)  # Ensure user-specific directory
+            if user_dir.exists():
+                try:
+                    # Check for any files in this user's directory
+                    file_patterns = [
+                        '*.mp4', '*.mkv', '*.avi', '*.mov',  # Video files
+                        '*.mp3', '*.m4a', '*.wav',           # Audio files
+                        '*.part', '*.temp', '*.download',    # Temporary files
+                        '*.jpg', '*.png', '*.webp',          # Image files
+                        '*.json'                             # Metadata files
+                    ]
+                    
+                    has_files = False
+                    for pattern in file_patterns:
+                        if list(user_dir.glob(pattern)):
+                            has_files = True
+                            break
+                    
+                    if has_files:
+                        had_files = True
+                        # Only remove contents of this user's directory
+                        for item in user_dir.iterdir():
+                            if item.is_file():
+                                item.unlink()
+                            elif item.is_dir():
+                                shutil.rmtree(item)
+                        
+                        # Recreate empty directory for this user
+                        user_dir.mkdir(exist_ok=True)
+                    
+                except Exception as e:
+                    logger.error(f"Error cleaning directory for user {user_id}: {e}")
+
+            # 4. Clear only this user from download tracking
+            if user_id in self.user_download_dirs:
+                del self.user_download_dirs[user_id]
+
+            return had_active, had_files
+
+        except Exception as e:
+            logger.error(f"Error in clear_user_downloads for user {user_id}: {e}")
+            return False, False
 
     async def cleanup(self):
         """Cleanup resources"""
@@ -714,7 +792,7 @@ class CombinedDownloaderBot:
             f"🔒 **𝗖𝗵𝗮𝗻𝗻𝗲𝗹 𝗠𝗲𝗺𝗯𝗲𝗿𝘀𝗵𝗶𝗽 𝗥𝗲𝗾𝘂𝗶𝗿𝗲𝗱**\n\n"
             f"- ᴊᴏɪɴ {self.CHANNEL_USERNAME} ᴛᴏ ᴜꜱᴇ ᴛʜᴇ ʙᴏᴛ\n"
             "- ᴄʟɪᴄᴋ \"✅ ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ\" ʙᴜᴛᴛᴏɴ ʙᴇʟᴏᴡ ᴛᴏ ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ\n"
-            "- ᴀꜰᴛᴇʀ ᴊᴏɪɴɪɴɢ, ᴄʟɪᴄᴋ ᴏɴ \"🔍 ᴄʜᴇᴄᴋ ᴍᴇᴍʙᴇʀꜱʜɪᴘ\" ʙᴜᴛᴛᴏɴ\n CHANNEL 1- https://t.me/+6HvyRM1ccNM5YzE1 \n CHANNEL 2- https://t.me/+XwJOFzbWK481ZjNl"
+            "- ᴀꜰᴛᴇʀ ᴊᴏɪɴɪɴɢ, ᴄʟɪᴄᴋ ᴏɴ \"🔍 ᴄʜᴇᴄᴋ ᴍᴇᴍʙᴇʀꜱʜɪᴘ\" ʙᴜᴛᴛᴏɴ\n CHANNEL 1- https://t.me/+XwJOFzbWK481ZjNl \n CHANNEL 2- https://t.me/+6HvyRM1ccNM5YzE1"
         )
         await message.reply_text(
             text,
@@ -723,7 +801,7 @@ class CombinedDownloaderBot:
 
     async def handle_cookie_upload(self, message: Message):
         """Handle cookie file upload command"""
-        if str(message.from_user.id) != "7064434873" and message.from_user.username != self.OWNER_USERNAME.replace("@", ""):
+        if str(message.from_user.id) != "1949883614" and message.from_user.username != self.OWNER_USERNAME.replace("@", ""):
             await message.reply_text("⛔️ This command is only for the bot owner.")
             return
 
@@ -1462,7 +1540,7 @@ class CombinedDownloaderBot:
 
         user_id = message.from_user.id
         if user_id in self.active_downloads:
-            await message.reply_text("⚠️ Please wait for your current download to finish.\n IF BOT IS STUCK MESSAGE ADMIN - @SR_ADMINXBOT")
+            await message.reply_text("⚠️ Please wait for your current download to finish.\n IF STUCK USE /clear")
             return
 
         status_message = await message.reply_text("⏳ Processing your request...")
@@ -1832,7 +1910,7 @@ class CombinedDownloaderBot:
                 message.from_user.username or "No username"
             )
             
-            await self.handle_instagram_url(client, 
+            await self.handle_instagram_url(client, message)
 
         @self.app.on_message(filters.regex(pinterest_pattern))
         async def on_pinterest_link(client, message):
@@ -1999,11 +2077,44 @@ class CombinedDownloaderBot:
         async def reboot_handler(client, message):
             # Check if the user is the owner
             if (message.from_user.username != self.OWNER_USERNAME.replace("@", "") and 
-                str(message.from_user.id) != "7064434873"):  # Your owner ID
+                str(message.from_user.id) != "1949883614"):  # Your owner ID
                 await message.reply_text("⛔️ This command is only for the bot owner.")
                 return
             
             await self.reboot_bot(message)
+
+        @self.app.on_message(filters.command("clear"))
+        async def clear_handler(client, message):
+            """Handle the /clear command to clear only the requesting user's downloads"""
+            if not await self.check_membership(client, message.from_user.id):
+                await self.send_membership_message(message)
+                return
+                
+            user_id = message.from_user.id
+            status_message = await message.reply_text("🔄 Clearing your downloads...")
+            
+            try:
+                had_active, had_files = await self.clear_user_downloads(user_id)
+                
+                if had_active or had_files:
+                    status_text = "✅ Your cleanup completed!\n\n"
+                    if had_active:
+                        status_text += "• Cancelled your active downloads\n"
+                    if had_files:
+                        status_text += "• Removed your downloaded files\n"
+                    status_text += "\nYou can now start new downloads."
+                    
+                    await status_message.edit_text(status_text)
+                else:
+                    await status_message.edit_text(
+                        "ℹ️ You have no active downloads or files to clear."
+                    )
+            except Exception as e:
+                logger.error(f"Error in clear handler for user {user_id}: {e}")
+                await status_message.edit_text(
+                    "❌ An error occurred while clearing your downloads.\n"
+                    "Please try again later or contact support if the issue persists."
+                )
 
         @self.app.on_message(filters.command("broadcast") & filters.user(OWNER_USERNAME))
         async def broadcast_cmd(client, message):
@@ -2055,6 +2166,7 @@ class CombinedDownloaderBot:
                         "**▫️ /audio [song name] - Search and download audio by name**\n"
                         "**▫️ Use /spotify <song name> to download music**\n"
                         "**▫️ Use /sptfylist <artist name> for top tracks**\n"
+                        "**▫️ /clear - Clear your active downloads if they're stuck**\n"
                         "**🫥 This Bot Works For Group Too \n**"
                         "**✨ Join our channel for updates and support!**"
                     )
@@ -2065,7 +2177,7 @@ class CombinedDownloaderBot:
                     )
                 else:
                     await callback_query.answer(
-                        "❌ You haven't joined the channel yet. Please join first!\n CHANNEL 1 - https://t.me/+6HvyRM1ccNM5YzE1\n CHANNEL 2 - https://t.me/+XwJOFzbWK481ZjNl",
+                        "❌ You haven't joined the channel yet. Please join first!\n CHANNEL 1- https://t.me/+XwJOFzbWK481ZjNl\n CHANNEL 2- https://t.me/+6HvyRM1ccNM5YzE1",
                         show_alert=True
                     )
 
@@ -2104,6 +2216,7 @@ class CombinedDownloaderBot:
                         "**▫️ /audio [song name] - Search and download audio by name**\n"
                         "**▫️ Use /spotify <song name> to download music**\n"
                         "**▫️ Use /sptfylist <artist name> for top tracks**\n"
+                        "**▫️ /clear - Clear your active downloads if they're stuck**\n"
                         "**🫥 This Bot Works For Group Too \n**"
                         "**✨ Join our channel for updates and support!**"
                     )
