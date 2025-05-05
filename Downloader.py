@@ -2248,3 +2248,81 @@ class CombinedDownloaderBot:
 if __name__ == "__main__":
     bot = CombinedDownloaderBot()
     bot.start()
+
+
+# ========== NEW FEATURES START ==========
+
+from pyrogram.enums import ChatMemberStatus
+
+# Force Join Channel Lists
+premium_channels = []
+free_channels = []
+
+# Language options
+LANGUAGES = {
+    "en": "🇺🇸 English",
+    "ru": "🇷🇺 Russian"
+}
+
+user_languages = {}  # Store per session
+
+@app.on_message(filters.command("start"))
+async def start_handler(client, message):
+    user_id = message.from_user.id
+    user = await client.get_users(user_id)
+    is_premium = getattr(user, 'is_premium', False)
+
+    # Ask language
+    lang_buttons = [
+        [InlineKeyboardButton(LANGUAGES['en'], callback_data="lang_en"),
+         InlineKeyboardButton(LANGUAGES['ru'], callback_data="lang_ru")]
+    ]
+    await message.reply("Choose your language:", reply_markup=InlineKeyboardMarkup(lang_buttons))
+
+@app.on_callback_query(filters.regex(r"^lang_"))
+async def set_language(client, callback_query):
+    lang_code = callback_query.data.split("_")[1]
+    user_languages[callback_query.from_user.id] = lang_code
+
+    await callback_query.answer(f"Language set to {LANGUAGES[lang_code]}")
+    await force_join_check(client, callback_query.message, lang_code)
+
+async def force_join_check(client, message, lang_code):
+    user_id = message.chat.id
+    user = await client.get_users(user_id)
+    is_premium = getattr(user, 'is_premium', False)
+    channels = premium_channels if is_premium else free_channels
+
+    for channel in channels:
+        try:
+            member = await client.get_chat_member(channel, user_id)
+            if member.status not in [ChatMemberStatus.MEMBER, ChatMemberStatus.OWNER, ChatMemberStatus.ADMINISTRATOR]:
+                raise Exception()
+        except:
+            buttons = [[InlineKeyboardButton("Join Channel", url=f"https://t.me/{channel}")]]
+            await message.reply("Please join the required channel to use the bot.",
+                                reply_markup=InlineKeyboardMarkup(buttons))
+            return
+
+    await message.reply("You are ready to use the bot!")
+
+@app.on_message(filters.command("add_premium") & filters.user(OWNER_ID))
+async def add_premium_channel(client, message):
+    parts = message.text.split()
+    if len(parts) > 1:
+        premium_channels.append(parts[1].replace("@", ""))
+        await message.reply("Premium channel added.")
+    else:
+        await message.reply("Usage: /add_premium @channelusername")
+
+@app.on_message(filters.command("add_free") & filters.user(OWNER_ID))
+async def add_free_channel(client, message):
+    parts = message.text.split()
+    if len(parts) > 1:
+        free_channels.append(parts[1].replace("@", ""))
+        await message.reply("Free channel added.")
+    else:
+        await message.reply("Usage: /add_free @channelusername")
+
+# ========== NEW FEATURES END ==========
+
