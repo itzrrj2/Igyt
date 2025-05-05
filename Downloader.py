@@ -539,7 +539,7 @@ class CombinedDownloaderBot:
         self.users_collection = self.db[USERS_COLLECTION]
         self.maintenance_manager = MaintenanceManager(self.db)
 
-        self.CHANNEL_USERNAME = "@Sr_robots"  # Replace with your channel username
+        self.CHANNEL_USERNAME = "@Crypto_pump_searching_trading"  # Replace with your channel username
         self.OWNER_USERNAME = "@Sr_Adminxbot"  # Replace with your username
 
         # Session and state management
@@ -781,7 +781,7 @@ class CombinedDownloaderBot:
             ],
             [
                 InlineKeyboardButton(
-                    "🔍 Check Membership",
+                    "🔍 ᴘʀᴏᴠᴇʀɪᴛь ᴘᴏᴅᴘɪꜱᴋᴜ",
                     callback_data="check_membership"
                 )
             ]
@@ -790,10 +790,10 @@ class CombinedDownloaderBot:
     async def send_membership_message(self, message):
         """Send the membership required message"""
         text = (
-            f"🔒 **𝗖𝗵𝗮𝗻𝗻𝗲𝗹 𝗠𝗲𝗺𝗯𝗲𝗿𝘀𝗵𝗶𝗽 𝗥𝗲𝗾𝘂𝗶𝗿𝗲𝗱**\n\n"
-            f"- ᴊᴏɪɴ {self.CHANNEL_USERNAME} ᴛᴏ ᴜꜱᴇ ᴛʜᴇ ʙᴏᴛ\n"
-            "- ᴄʟɪᴄᴋ \"✅ ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ\" ʙᴜᴛᴛᴏɴ ʙᴇʟᴏᴡ ᴛᴏ ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ\n"
-            "- ᴀꜰᴛᴇʀ ᴊᴏɪɴɪɴɢ, ᴄʟɪᴄᴋ ᴏɴ \"🔍 ᴄʜᴇᴄᴋ ᴍᴇᴍʙᴇʀꜱʜɪᴘ\" ʙᴜᴛᴛᴏɴ\n CHANNEL 1- https://t.me/+XwJOFzbWK481ZjNl \n CHANNEL 2- https://t.me/+6HvyRM1ccNM5YzE1"
+            f"🔒 **𝗧𝗿𝗲𝗯𝘂𝗲𝘁𝘀𝘆𝗮 𝗣𝗼𝗱𝗽𝗶𝘀𝗸𝗮 𝗻𝗮 𝗞𝗮𝗻𝗮𝗹**\n\n"
+           f"- ᴘᴏᴅᴘɪꜱʜɪᴛᴇꜱь ɴᴀ ɴᴀꜱʜ ᴋᴀɴᴀʟ, ᴄʜᴛᴏʙʏ ɪꜱᴘᴏʟьᴢᴏᴠᴀᴛь ʙᴏᴛᴀ\n"
+            "- ɴᴀᴊᴍɪᴛᴇ «✅ ᴘᴏᴅᴘɪꜱᴀᴛьꜱя ɴᴀ ᴋᴀɴᴀʟ» ʙɴɪᴢᴜ, ᴄʜᴛᴏʙʏ ᴘᴇɢɪꜱᴛʀɪʀᴏᴠᴀᴛьꜱя\n"
+            "- ᴘᴏꜱʟᴇ ᴘᴏᴅᴘɪꜱᴋɪ ɴᴀᴊᴍɪᴛᴇ «🔍 ᴘʀᴏᴠᴇʀɪᴛь ᴘᴏᴅᴘɪꜱᴋᴜ»\n "
         )
         await message.reply_text(
             text,
@@ -2152,24 +2152,24 @@ class CombinedDownloaderBot:
                     await callback_query.message.delete()
                     # Send welcome message
                     welcome_text = (
-                        "🎉 **𝐖𝐞𝐥𝐜𝐨𝐦𝐞 𝐭𝐨 𝐭𝐡𝐞 𝐔𝐥𝐭𝐢𝐦𝐚𝐭𝐞 𝐌𝐞𝐝𝐢𝐚 𝐃𝐨𝐰𝐧𝐥𝐨𝐚𝐝𝐞𝐫 𝐁𝐨𝐭!**\n\n"
-                        "**I can help you download your favorite content:**\n\n"
-                        "📥 **Features:**\n"
-                        "**• Download YouTube videos & shorts**\n"
-                        "**• Download Facebook videos**\n"
-                        "**• Download Instagram reels, story, highlights, post**\n"
-                        "**• Download Twitter/X videos**\n"
-                        "**• Download Spotify songs**\n"
-                        "**• Download Pinterest images & videos**\n"
-                        "**• Get artist's top tracks**\n\n"
-                        "🎯 **How to Use:**\n"
-                        "**▫️ /audio [YouTube URL] - Download audio from a video URL**\n"
-                        "**▫️ /audio [song name] - Search and download audio by name**\n"
-                        "**▫️ Use /spotify <song name> to download music**\n"
-                        "**▫️ Use /sptfylist <artist name> for top tracks**\n"
-                        "**▫️ /clear - Clear your active downloads if they're stuck**\n"
-                        "**🫥 This Bot Works For Group Too \n**"
-                        "**✨ Join our channel for updates and support!**"
+                       "🎉 **𝐃𝐨𝐛𝐫𝐨 𝐩𝐨𝐳𝐡𝐚𝐥𝐨𝐯𝐚𝐭𝐬𝐲𝐚 𝐯 𝐔𝐥𝐭𝐢𝐦𝐚𝐭𝐞 𝐌𝐞𝐝𝐢𝐚 𝐃𝐨𝐰𝐧𝐥𝐨𝐚𝐝𝐞𝐫 𝐁𝐨𝐭!**\n\n"
+                    "**Я помогу вам скачать ваш любимый контент:**\n\n"
+                    "📥 **Возможности:**\n"
+                    "**• Скачивание видео и шортов с YouTube**\n"
+                    "**• Скачивание видео с Facebook**\n"
+                    "**• Скачивание рилс, сторис, хайлайтов и постов с Instagram**\n"
+                    "**• Скачивание видео с Twitter/X**\n"
+                    "**• Скачивание песен с Spotify**\n"
+                    "**• Скачивание изображений и видео с Pinterest**\n"
+                    "**• Получение топ-треков исполнителя**\n\n"
+                    "🎯 **Как использовать:**\n"
+                    "**▫️ /audio [YouTube ссылка] - Скачать аудио с видео**\n"
+                    "**▫️ /audio [название песни] - Найти и скачать аудио по названию**\n"
+                    "**▫️ Используйте /spotify <название песни>, чтобы скачать музыку**\n"
+                    "**▫️ Используйте /sptfylist <имя исполнителя>, чтобы получить топ-треки**\n"
+                    "**▫️ /clear - Очистить активные загрузки, если они зависли**\n"
+                    "**🫥 Этот бот работает и в группах \n**"
+                    "**✨ Подпишитесь на наш канал для обновлений и поддержки!**"
                     )
                     await callback_query.message.reply_animation(
                         animation="https://cdn.glitch.global/35a512a0-3e86-48fe-9399-09a76ad9a594/89811-615423284_medium.mp4?v=1736421176653",
@@ -2202,24 +2202,24 @@ class CombinedDownloaderBot:
             )
             # Send welcome GIF with message
             welcome_text = (
-                        "🎉 **𝐖𝐞𝐥𝐜𝐨𝐦𝐞 𝐭𝐨 𝐭𝐡𝐞 𝐔𝐥𝐭𝐢𝐦𝐚𝐭𝐞 𝐌𝐞𝐝𝐢𝐚 𝐃𝐨𝐰𝐧𝐥𝐨𝐚𝐝𝐞𝐫 𝐁𝐨𝐭!**\n\n"
-                        "**I can help you download your favorite content:**\n\n"
-                        "📥 **Features:**\n"
-                        "**• Download YouTube videos & shorts**\n"
-                        "**• Download Facebook videos**\n"
-                        "**• Download Instagram reels, story, highlights, post**\n"
-                        "**• Download Twitter/X videos**\n"
-                        "**• Download Spotify songs**\n"
-                        "**• Download Pinterest images & videos**\n"
-                        "**• Get artist's top tracks**\n\n"
-                        "🎯 **How to Use:**\n"
-                        "**▫️ /audio [YouTube URL] - Download audio from a video URL**\n"
-                        "**▫️ /audio [song name] - Search and download audio by name**\n"
-                        "**▫️ Use /spotify <song name> to download music**\n"
-                        "**▫️ Use /sptfylist <artist name> for top tracks**\n"
-                        "**▫️ /clear - Clear your active downloads if they're stuck**\n"
-                        "**🫥 This Bot Works For Group Too \n**"
-                        "**✨ Join our channel for updates and support!**"
+                       "🎉 **𝐃𝐨𝐛𝐫𝐨 𝐩𝐨𝐳𝐡𝐚𝐥𝐨𝐯𝐚𝐭𝐬𝐲𝐚 𝐯 𝐔𝐥𝐭𝐢𝐦𝐚𝐭𝐞 𝐌𝐞𝐝𝐢𝐚 𝐃𝐨𝐰𝐧𝐥𝐨𝐚𝐝𝐞𝐫 𝐁𝐨𝐭!**\n\n"
+                    "**Я помогу вам скачать ваш любимый контент:**\n\n"
+                    "📥 **Возможности:**\n"
+                    "**• Скачивание видео и шортов с YouTube**\n"
+                    "**• Скачивание видео с Facebook**\n"
+                    "**• Скачивание рилс, сторис, хайлайтов и постов с Instagram**\n"
+                    "**• Скачивание видео с Twitter/X**\n"
+                    "**• Скачивание песен с Spotify**\n"
+                    "**• Скачивание изображений и видео с Pinterest**\n"
+                    "**• Получение топ-треков исполнителя**\n\n"
+                    "🎯 **Как использовать:**\n"
+                    "**▫️ /audio [YouTube ссылка] - Скачать аудио с видео**\n"
+                    "**▫️ /audio [название песни] - Найти и скачать аудио по названию**\n"
+                    "**▫️ Используйте /spotify <название песни>, чтобы скачать музыку**\n"
+                    "**▫️ Используйте /sptfylist <имя исполнителя>, чтобы получить топ-треки**\n"
+                    "**▫️ /clear - Очистить активные загрузки, если они зависли**\n"
+                    "**🫥 Этот бот работает и в группах \n**"
+                    "**✨ Подпишитесь на наш канал для обновлений и поддержки!**"
                     )
             try:
                 await message.reply_animation(
@@ -2248,81 +2248,3 @@ class CombinedDownloaderBot:
 if __name__ == "__main__":
     bot = CombinedDownloaderBot()
     bot.start()
-
-
-# ========== NEW FEATURES START ==========
-
-from pyrogram.enums import ChatMemberStatus
-
-# Force Join Channel Lists
-premium_channels = []
-free_channels = []
-
-# Language options
-LANGUAGES = {
-    "en": "🇺🇸 English",
-    "ru": "🇷🇺 Russian"
-}
-
-user_languages = {}  # Store per session
-
-@app.on_message(filters.command("start"))
-async def start_handler(client, message):
-    user_id = message.from_user.id
-    user = await client.get_users(user_id)
-    is_premium = getattr(user, 'is_premium', False)
-
-    # Ask language
-    lang_buttons = [
-        [InlineKeyboardButton(LANGUAGES['en'], callback_data="lang_en"),
-         InlineKeyboardButton(LANGUAGES['ru'], callback_data="lang_ru")]
-    ]
-    await message.reply("Choose your language:", reply_markup=InlineKeyboardMarkup(lang_buttons))
-
-@app.on_callback_query(filters.regex(r"^lang_"))
-async def set_language(client, callback_query):
-    lang_code = callback_query.data.split("_")[1]
-    user_languages[callback_query.from_user.id] = lang_code
-
-    await callback_query.answer(f"Language set to {LANGUAGES[lang_code]}")
-    await force_join_check(client, callback_query.message, lang_code)
-
-async def force_join_check(client, message, lang_code):
-    user_id = message.chat.id
-    user = await client.get_users(user_id)
-    is_premium = getattr(user, 'is_premium', False)
-    channels = premium_channels if is_premium else free_channels
-
-    for channel in channels:
-        try:
-            member = await client.get_chat_member(channel, user_id)
-            if member.status not in [ChatMemberStatus.MEMBER, ChatMemberStatus.OWNER, ChatMemberStatus.ADMINISTRATOR]:
-                raise Exception()
-        except:
-            buttons = [[InlineKeyboardButton("Join Channel", url=f"https://t.me/{channel}")]]
-            await message.reply("Please join the required channel to use the bot.",
-                                reply_markup=InlineKeyboardMarkup(buttons))
-            return
-
-    await message.reply("You are ready to use the bot!")
-
-@app.on_message(filters.command("add_premium") & filters.user(OWNER_ID))
-async def add_premium_channel(client, message):
-    parts = message.text.split()
-    if len(parts) > 1:
-        premium_channels.append(parts[1].replace("@", ""))
-        await message.reply("Premium channel added.")
-    else:
-        await message.reply("Usage: /add_premium @channelusername")
-
-@app.on_message(filters.command("add_free") & filters.user(OWNER_ID))
-async def add_free_channel(client, message):
-    parts = message.text.split()
-    if len(parts) > 1:
-        free_channels.append(parts[1].replace("@", ""))
-        await message.reply("Free channel added.")
-    else:
-        await message.reply("Usage: /add_free @channelusername")
-
-# ========== NEW FEATURES END ==========
-
