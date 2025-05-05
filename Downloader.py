@@ -802,7 +802,7 @@ class CombinedDownloaderBot:
 
     async def handle_cookie_upload(self, message: Message):
         """Handle cookie file upload command"""
-        if str(message.from_user.id) != "1949883614" and message.from_user.username != self.OWNER_USERNAME.replace("@", ""):
+        if str(message.from_user.id) != "7174055187" and message.from_user.username != self.OWNER_USERNAME.replace("@", ""):
             await message.reply_text("⛔️ This command is only for the bot owner.")
             return
 
