@@ -40,8 +40,8 @@ logging.getLogger('yt_dlp').setLevel(logging.CRITICAL)
 # Configure your API credentials
 API_ID = "19593445"
 API_HASH = "f78a8ae025c9131d3cc57d9ca0fbbc30"
-BOT_TOKEN = "7861925313:AAHnnD6rE6RcKk_YU9WTWF9HVXcbVjgw8DE"
-LOG_GROUP_ID = -1002310068513  # Replace with your logging group ID
+BOT_TOKEN = "7789010390:AAE0OvgV7n6_XZ8R6xWgWd6uHvUIiduVWvc"
+LOG_GROUP_ID = -1002474755159  # Replace with your logging group ID
 OWNER_USERNAME = "@pipipix6"
 OWNER_ID = 7064434873 
 SPOTIFY_CLIENT_ID = '8c684853ce414ceaaf905fc02aba45cb'
@@ -539,7 +539,7 @@ class CombinedDownloaderBot:
         self.users_collection = self.db[USERS_COLLECTION]
         self.maintenance_manager = MaintenanceManager(self.db)
 
-        self.CHANNEL_USERNAME = "@Xstream_Links2"  # Replace with your channel username
+        self.CHANNEL_USERNAME = "@Sr_robots"  # Replace with your channel username
         self.OWNER_USERNAME = "@Sr_Adminxbot"  # Replace with your username
 
         # Session and state management
